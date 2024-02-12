@@ -1,12 +1,16 @@
+#define LED 13
 void setup()
 {
-  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600);
+  pinMode(LED, OUTPUT);
 }
 
 void loop()
 {
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED, HIGH);
+  Serial.println("on");
   delay(1000); // Wait for 1000 millisecond(s)
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(LED, LOW);
+  Serial.println("off");
   delay(1000); // Wait for 1000 millisecond(s)
 }
