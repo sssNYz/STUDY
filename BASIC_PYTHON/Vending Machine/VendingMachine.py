@@ -1,15 +1,15 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox 
 from PIL import Image, ImageTk
-import requests
+import requests #use for import picture from HTTP
 from io import BytesIO
 
 
 class ThaiVendingMachine:
-    def __init__(self, master):
+    def __init__(self, master): #__init__ is constructor  #self is instance object) #maser is reference to root (tk)  #this function use for default setting 
         self.master = master
         self.master.title("อาหารไทยแซบๆ")
-        self.master.geometry("1600x900") 
+        self.master.geometry("1600x900") #set window size
         self.master.configure(bg="#f0f0f0")
 
         self.style = ttk.Style()
@@ -35,28 +35,28 @@ class ThaiVendingMachine:
         self.load_images()
         self.show_main_menu()
 
-    def load_images(self):
+    def load_images(self): #set url and loop call load_and_resize_image function 
         
         image_urls = {
             "ข้าวผัด": "https://www.maggi.co.th/sites/default/files/srh_recipes/a1b6cab9710d963ab0d30f62e5d3a88a.jpeg",
             "ผัดกะเพรา": "https://images.aws.nestle.recipes/original/494645db6798945b3c628be37b75241d_กะเพราเจ_new.jpg",
             "ต้มยำกุ้ง": "https://d3h1lg3ksw6i6b.cloudfront.net/media/image/2023/04/24/5608757681874e1ea5df1aa41d5b2e3d_How_To_Make_Tom_Yam_Kung_The_Epitome_Of_Delicious_And_Nutritious_Thai_Cuisine3.jpg",
         }
-        self.images = {item: self.load_and_resize_image(url) for item, url in image_urls.items()}
+        self.images = {item: self.load_and_resize_image(url) for item, url in image_urls.items()} #loop for load img
 
-    def load_and_resize_image(self, url):
+    def load_and_resize_image(self, url): #load and resize img, then convert to tk PhotoImage
         try:
-            response = requests.get(url)
+            response = requests.get(url) #get img from url
             image = Image.open(BytesIO(response.content))
             image = image.resize((200, 150), Image.LANCZOS)
             return ImageTk.PhotoImage(image)
         except Exception as e:
-            print(f"Error loading image from {url}: {e}")
+            print(f"Error loading image from {url}: {e}") #if error to load img
             # Return a blank image in case of error
             return ImageTk.PhotoImage(Image.new("RGB", (200, 150), color="lightgray"))
 
     def show_main_menu(self):
-        self.clear_frame()
+        self.clear_frame() #call clear_frame function 
         self.current_state = "main_menu"
 
         title = ttk.Label(self.main_frame, text="อาหารไทยแซบๆ", font=("Arial", 28, "bold"), background="#f0f0f0")
@@ -65,7 +65,8 @@ class ThaiVendingMachine:
         menu_frame = ttk.Frame(self.main_frame, style="TFrame")
         menu_frame.pack(pady=20)
 
-        for idx, (item, price) in enumerate(self.menu_items.items()):
+        for idx, (item, price) in enumerate(self.menu_items.items()):#this is output --> [(0, ("ข้าวผัด", 45)), (1, ("ผัดกะเพรา", 59)), (2, ("ต้มยำกุ้ง", 80))]
+            #loop for get menu and cost for show in frame
             item_frame = ttk.Frame(menu_frame, style="TFrame")
             item_frame.grid(row=0, column=idx, padx=20, pady=10)
 
