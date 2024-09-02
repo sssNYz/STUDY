@@ -32,8 +32,8 @@ class ThaiVendingMachine:
             "ต้มยำกุ้ง": 80
         }
 
-        self.load_images()
-        self.show_main_menu()
+        self.load_images() #load img to show menu
+        self.show_main_menu() #load detail menu to show menu
 
     def load_images(self): #set url and loop call load_and_resize_image function 
         
@@ -75,22 +75,22 @@ class ThaiVendingMachine:
 
             ttk.Label(item_frame, text=f"{item}", font=("Arial", 16, "bold"), background="#f0f0f0").pack()
             ttk.Label(item_frame, text=f"{price} บาท", font=("Arial", 14), background="#f0f0f0").pack()
-            ttk.Button(item_frame, text="เลือก", command=lambda i=item: self.select_item(i)).pack(pady=10)
+            ttk.Button(item_frame, text="เลือก", command=lambda i=item: self.select_item(i)).pack(pady=10) #lambda function for call select_item function
 
     def select_item(self, item):
-        self.selected_item = item
-        self.total_price = self.menu_items[item]
-        self.customizations = {}
+        self.selected_item = item #update item name that user select
+        self.total_price = self.menu_items[item] #update price 
+        self.customizations = {} #empty 
         self.show_customization()
 
     def show_customization(self):
         self.clear_frame()
-        self.current_state = "customization"
+        self.current_state = "customization" #update state 
 
         title = ttk.Label(self.main_frame, text=f"ปรุง{self.selected_item}", font=("Arial", 24, "bold"), background="#f0f0f0")
         title.pack(pady=20)
 
-        if self.selected_item == "ข้าวผัด":
+        if self.selected_item == "ข้าวผัด": #basic if-else 
             self.show_rice_type_options()
         elif self.selected_item == "ผัดกะเพรา":
             self.show_rice_type_options()
@@ -100,12 +100,12 @@ class ThaiVendingMachine:
     def show_rice_type_options(self):
         ttk.Label(self.main_frame, text="เลือกชนิดข้าว:", font=("Arial", 18)).pack(pady=10)
         options = [("ข้าวหอมมะลิ", 0), ("ข้าวกล้อง", 10), ("ข้าวเหนียว", 30)]
-        self.create_option_buttons(options, self.select_rice_type)
+        self.create_option_buttons(options, self.select_rice_type) #call create_option_buttons for create buttons that can call another function next (select_rice_type)
 
     def select_rice_type(self, option, price):
-        self.customizations["ชนิดข้าว"] = option
-        self.total_price += price
-        if self.selected_item == "ข้าวผัด":
+        self.customizations["ชนิดข้าว"] = option #add selection in to customizations{}
+        self.total_price += price #update price
+        if self.selected_item == "ข้าวผัด":  #call next function
             self.show_fried_rice_ingredients()
         elif self.selected_item == "ผัดกะเพรา":
             self.show_basil_ingredients()
@@ -141,7 +141,7 @@ class ThaiVendingMachine:
     def select_spiciness(self, option, price):
         self.customizations["Spiciness"] = option
         self.show_packaging_options()
-
+#----------------------------------------------------------------------------------------------------------
     def show_tom_yum_options(self):
         self.clear_frame()
         ttk.Label(self.main_frame, text="เพิ่มวัตถุดิบ:", font=("Arial", 18)).pack(pady=10)
@@ -158,7 +158,8 @@ class ThaiVendingMachine:
         ttk.Label(self.main_frame, text="เลือกภาชนะ:", font=("Arial", 18)).pack(pady=10)
         options = [("ถุงพลาสติก", 10), ("กล่องกระดาษ", 20), ("นำภาชนะมาเอง", -10)]
         self.create_option_buttons(options, self.select_packaging)
-
+#----------------------------------------------------------------------------------------------------------
+        
     def select_packaging(self, option, price):
         self.customizations["ภาชนะ"] = option
         self.total_price += price
@@ -171,23 +172,23 @@ class ThaiVendingMachine:
         ttk.Label(self.main_frame, text="สรุปรายการอาหาร", font=("Arial", 24, "bold")).pack(pady=20)
         ttk.Label(self.main_frame, text=f"ชื่ออาหาร: {self.selected_item}", font=("Arial", 18)).pack(pady=5)
         
-        for key, value in self.customizations.items():
+        for key, value in self.customizations.items(): #loop show customization that user all select
             ttk.Label(self.main_frame, text=f"{key}: {value}", font=("Arial", 18)).pack(pady=5)
         
         ttk.Label(self.main_frame, text=f"Total Price: {self.total_price} บาท", font=("Arial", 20, "bold")).pack(pady=10)
 
         button_frame = ttk.Frame(self.main_frame)
         button_frame.pack(pady=20)
-        ttk.Button(button_frame, text="ไม่แดกแล้ว!", command=self.show_main_menu).pack(side=tk.LEFT, padx=20)
-        ttk.Button(button_frame, text="ชำระเงิน", command=self.show_payment).pack(side=tk.RIGHT, padx=20)
+        ttk.Button(button_frame, text="ไม่แดกแล้ว!", command=self.show_main_menu).pack(side=tk.LEFT, padx=20) #is cancel and go main menu
+        ttk.Button(button_frame, text="ชำระเงิน", command=self.show_payment).pack(side=tk.RIGHT, padx=20)#is go next to payment 
 
     def show_payment(self):
         self.clear_frame()
         self.current_state = "payment"
 
         ttk.Label(self.main_frame, text="เติมเงิน", font=("Arial", 24, "bold")).pack(pady=20)
-        ttk.Label(self.main_frame, text=f"ราคารวม: {self.total_price} บาท", font=("Arial", 20)).pack(pady=10)
-        ttk.Label(self.main_frame, text=f"เงินในบัญชี: {self.balance} บาท", font=("Arial", 20)).pack(pady=10)
+        ttk.Label(self.main_frame, text=f"ราคารวม: {self.total_price} บาท", font=("Arial", 20)).pack(pady=10) #a price that user must to pay
+        ttk.Label(self.main_frame, text=f"เงินในบัญชี: {self.balance} บาท", font=("Arial", 20)).pack(pady=10)#a balance that user have 
 
         coin_frame = ttk.Frame(self.main_frame)
         coin_frame.pack(pady=20)
@@ -228,10 +229,10 @@ class ThaiVendingMachine:
                 amount %= coin
         return change
 
-    def create_option_buttons(self, options, command):
+    def create_option_buttons(self, options, command): #option is menu  #command is select_rice_type function
         for option, price in options:
             ttk.Button(self.main_frame, text=f"{option}: {price:+d} บาท", 
-                       command=lambda o=option, p=price: command(o, p)).pack(pady=5)
+                       command=lambda o=option, p=price: command(o, p)).pack(pady=5) #command(o,p) is call select_rice_type function and send argument o,p 
 
     def clear_frame(self):
         for widget in self.main_frame.winfo_children():
